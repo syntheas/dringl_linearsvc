@@ -1,0 +1,8 @@
+data_input
+tensor_logs
+__pycache__
+output*
+*.csv
+*.h5
+.vscode
+.history
