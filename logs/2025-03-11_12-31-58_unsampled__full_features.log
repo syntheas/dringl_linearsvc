@@ -1,4 +1,6 @@
-### 11.03
+=== Log started at 2025-03-11_12-31-58 ===
+=== Classification Model Evaluation ===
+
               precision    recall  f1-score   support
 
            0       0.92      0.79      0.85        71
@@ -11,8 +13,7 @@
    macro avg       0.68      0.56      0.58      7306
 weighted avg       0.99      0.99      0.99      7306
 
-acc: 0.991650698056392
-
+0.991650698056392
 Confusion Matrix:
 Predicted   0  2     3     4
 Actual                      

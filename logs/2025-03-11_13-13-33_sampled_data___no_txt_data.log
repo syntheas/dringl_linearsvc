@@ -1,0 +1,25 @@
+=== Log started at 2025-03-11_13-13-33 ===
+=== sampled data & no txt data ===
+
+              precision    recall  f1-score   support
+
+           0       0.31      0.94      0.47        71
+           1       0.14      0.29      0.19         7
+           2       0.06      0.21      0.09        34
+           3       0.98      0.86      0.92      1984
+           4       1.00      1.00      1.00      5210
+
+    accuracy                           0.96      7306
+   macro avg       0.50      0.66      0.53      7306
+weighted avg       0.98      0.96      0.97      7306
+
+acc:  0.9579797426772516 
+
+Confusion Matrix:
+Predicted    0   1    2     3     4
+Actual                             
+0           67   0    0     4     0
+1            0   2    1     4     0
+2            2   1    7    24     0
+3          145  11  114  1713     1
+4            0   0    0     0  5210

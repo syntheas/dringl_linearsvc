@@ -22,7 +22,7 @@ def scale_numeric_columns(df):
 
 def get_formattedinput(df, vectorizer):
     # separation von numerischen Attributen und Festsetzung auf float Vektor
-    df_numeric = df.select_dtypes(include=['number', 'bool'])#.drop(columns= 'change_dringl')
+    df_numeric = df.select_dtypes(include=['number', 'bool'])#.drop(columns= 'change_ausw')
     X_numeric = np.array(df_numeric).astype(float)
 
     X_texttfidf = vectorizer.transform(df['combined_text'])
