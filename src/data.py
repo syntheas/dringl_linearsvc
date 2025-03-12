@@ -20,8 +20,11 @@ data_folder= Path(script_dir / "../input")
 outputdependence_folder= Path(script_dir / "../output_dependence")
 
 datatrain_path = str(data_folder / "features4ausw4linearsvc_train.csv")
-datatrainsampled_path = str(data_folder / "features4ausw4linearsvc_trainsampled_v2.h5")
+scaler_path = str(data_folder / "ausw_dependence_scaler.pkl")
+datatrainsampled_path = str(data_folder / "features4ausw4linearsvc_trainsampled.h5")
+datatrainsampledonlynew_path = str(data_folder / "features4ausw4linearsvc_trainsampledonlynew.h5")
 datatest_path = str(data_folder / "features4ausw4linearsvc_test.csv")
+datatestscaled_path = str(data_folder / "features4ausw4linearsvc_testscaled.csv")
 
 output_dependence_path = str(outputdependence_folder / "ausw_dependence_{}.pkl")
 
@@ -43,37 +46,19 @@ def get_data():
 
 def get_sampled_data():
     X_train, y_train = load_h5_sparse(datatrainsampled_path)
-    X_train, scaler = scale_sampled_data(X_train)
-    df_testval = load_df(datatest_path)
+    df_testval = load_df(datatestscaled_path)
+
     # Aufteilung in val u. Testdaten, dabei wird auf Gleichverteilung des auswichkeitsattributs geachtet
     df_val, _ = train_test_split(df_testval, test_size=0.57, random_state=42, stratify=df_testval['impact'])
-    # vectorizer, selector = load_dependence()
-    X_val, y_val, _, = get_x_y2(df_val, scaler)
+    vectorizer, selector = load_dependence()
+    X_val, y_val, _, _= get_x_y3(df_val, vectorizer, selector)
 
     return X_train, y_train, X_val, y_val
 
-def scale_sampled_data(X_train):
-    # Convert sparse to dense if needed
-    if scipy.sparse.issparse(X_train):
-        X_train = X_train.toarray()
-    
-    # Split the data
-    data_to_scale = X_train[:,:]
-    # data_to_scale = X_train[:,:-5000]
-    # data_not_to_scale = X_train[:,-5000:]
-    
-    scaler = MinMaxScaler()
-    scaled_data = scaler.fit_transform(data_to_scale)
-    if not scipy.sparse.issparse(scaled_data):
-        # Convert to sparse matrix if it's not already
-        scaled_data = scipy.sparse.csr_matrix(scaled_data)
-    # X_train_combined = scipy.sparse.hstack([scaled_data, data_not_to_scale])
-    X_train_combined = scipy.sparse.hstack([scaled_data])
-    return X_train_combined, scaler
 
 def load_df(path):
     df = pd.read_csv(path, dtype={'impact': str})
-    df.drop(columns=["id", "combined_tks"], inplace=True)
+    df.drop(columns=["id"], inplace=True)
     
     return df
     
@@ -100,6 +85,12 @@ def load_dependence():
     vectorizer = TfidfVectorizer.load(output_dependence_path.format("vectorizer"))
 
     return vectorizer, selector
+
+def load_scaler():
+    with open(scaler_path, "rb") as f:
+        scaler = dill.load(f)
+
+    return scaler
 
     
 def get_x_y(df, vectorizer=None, scaler=None, selector=None):
@@ -144,6 +135,44 @@ def get_x_y(df, vectorizer=None, scaler=None, selector=None):
     
     return X_combined, y, vectorizer, scaler, selector
 
+def get_x_y3(df, vectorizer=None, selector=None):
+    # no scaling because already scaled in data prep
+
+    df = na_imputing(df)
+
+    # Separation der Zielvariable
+    y = df['impact']
+
+    # separation von numerischen Attributen und Festsetzung auf float Vektor
+    df_numeric = df.select_dtypes(include=['number', 'bool'])#.drop(columns= 'impact')
+    X_vec1 = np.array(df_numeric).astype(float)
+
+    if vectorizer is None:
+        # Initialize TfidfVectorizer
+        vectorizer = TfidfVectorizer(max_df=1.0, min_df=1, ngram_range=(1, 3))
+        # Fit the vectorizer to the data
+        vectorizer.fit(df['combined_tks'])
+        vectorizer.save(output_dependence_path.format('vectorizer'))
+
+    X_vec2 = vectorizer.transform(df['combined_tks'])
+
+    if selector is None:
+        k = 5000  # Number of best features to keep
+        selector = SelectKBest(chi2, k=k)
+        selector.fit(X_vec2, y)
+        # safe selector to output dependence with dill
+        with open(output_dependence_path.format('featureselector'), "wb") as f:
+            dill.dump(selector, f)  # Ensure the file is opened in 'wb' mode
+
+    X_vec2 = selector.transform(X_vec2)
+
+    # Horizonatle Verbindung des Numerik-Vektors und Schlagwort-Vektors
+    X_combined = hstack([X_vec1, X_vec2])
+
+
+    
+    return X_combined, y, vectorizer, selector
+
 def get_x_y2(df, scaler=None):
     # without txt data
 
@@ -167,7 +196,7 @@ def get_x_y2(df, scaler=None):
     return X_combined, y, scaler
 
 
-def get_x_y3(df, vectorizer=None, scaler=None, selector=None):
+def get_x_y(df, vectorizer=None, scaler=None, selector=None):
     df = na_imputing(df)
 
     # Separation der Zielvariable

@@ -1,0 +1,29 @@
+=== Log started at 2025-03-12_11-33-47 ===
+=== 
+scaled before sampling
+only samples in train
+===
+
+X shape: (75000, 5287)
+              precision    recall  f1-score   support
+
+           0       0.23      0.93      0.38        71
+           1       0.00      0.00      0.00         7
+           2       0.03      0.71      0.05        34
+           3       0.99      0.46      0.63      1984
+           4       1.00      1.00      1.00      5210
+
+    accuracy                           0.85      7306
+   macro avg       0.45      0.62      0.41      7306
+weighted avg       0.98      0.85      0.89      7306
+
+acc:  0.8501231864221188 
+
+Confusion Matrix:
+Predicted    0  1    2    3     4
+Actual                           
+0           66  0    2    3     0
+1            1  0    4    2     0
+2            3  0   24    7     0
+3          211  1  861  911     0
+4            0  0    0    0  5210

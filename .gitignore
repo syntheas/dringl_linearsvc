@@ -6,3 +6,4 @@ output*
 *.h5
 .vscode
 .history
+*.pkl
