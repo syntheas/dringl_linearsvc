@@ -1,5 +1,5 @@
 === Log started at 2025-03-11_13-13-33 ===
-=== sampled data & no txt data ===
+=== sampled data (std. smote) & no txt data ===
 
               precision    recall  f1-score   support
 

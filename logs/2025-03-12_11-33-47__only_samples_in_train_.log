@@ -1,7 +1,7 @@
 === Log started at 2025-03-12_11-33-47 ===
 === 
 scaled before sampling
-only samples in train
+only samples (std. smote) in train
 ===
 
 X shape: (75000, 5287)

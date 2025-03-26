@@ -1,6 +1,6 @@
 === Log started at 2025-03-12_11-43-07 ===
 === 
-sampled & scaled before sampling
+sampled with std smote & scaled before sampling
  ===
 
 X shape: (112533, 5287)

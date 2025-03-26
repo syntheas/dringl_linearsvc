@@ -19,6 +19,7 @@ script_dir = Path(__file__).parent.resolve()
 data_folder= Path(script_dir / "../input")
 outputdependence_folder= Path(script_dir / "../output_dependence")
 
+datatraintabsyn_path = str(data_folder / "tabsyn.csv")
 datatrain_path = str(data_folder / "features4ausw4linearsvc_train.csv")
 scaler_path = str(data_folder / "ausw_dependence_scaler.pkl")
 datatrainsampled_path = str(data_folder / "features4ausw4linearsvc_trainsampled.h5")
@@ -32,13 +33,18 @@ output_dependence_path = str(outputdependence_folder / "ausw_dependence_{}.pkl")
 
 def get_data():
     df_train = load_df(datatrain_path)
+    df_traintabsyn = load_df(datatraintabsyn_path)
+    
+    # Hinzufügen der Zeilen zu df_train
+    df_train_combined = pd.concat([df_train, df_traintabsyn], ignore_index=True)
+
     df_testval = load_df(datatest_path)
     # df = filter_pre2(df)
     
     # Aufteilung in val u. Testdaten, dabei wird auf Gleichverteilung des auswichkeitsattributs geachtet
     df_val, _ = train_test_split(df_testval, test_size=0.57, random_state=42, stratify=df_testval['impact'])
     
-    X_train, y_train, scaler = get_x_y2(df_train)
+    X_train, y_train, scaler = get_x_y2(df_train_combined)
     X_val, y_val, _,  = get_x_y2(df_val, scaler)
     
     return X_train, y_train, X_val, y_val
@@ -58,7 +64,10 @@ def get_sampled_data():
 
 def load_df(path):
     df = pd.read_csv(path, dtype={'impact': str})
-    df.drop(columns=["id"], inplace=True)
+    try:
+        df.drop(columns=["id", "combined_tks"], inplace=True)
+    except Exception as e:
+        print(e)
     
     return df
     
@@ -190,7 +199,7 @@ def get_x_y2(df, scaler=None):
         X_vec1 = scaler.transform(X_vec1)
 
 
-    # Horizonatle Verbindung des Numerik-Vektors und Schlagwort-Vektors
+    # Horizonatle Verbindung des Numerik-Vektors
     X_combined = hstack([scipy.sparse.csr_matrix(X_vec1)])
     
     return X_combined, y, scaler
@@ -264,4 +273,4 @@ def na_imputing(df):
 
 
 if __name__ == '__main__':
-    get_sampled_data()
+    get_data()
