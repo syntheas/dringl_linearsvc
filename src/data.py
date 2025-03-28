@@ -21,6 +21,7 @@ outputdependence_folder= Path(script_dir / "../output_dependence")
 
 datatraintabsyn_path = str(data_folder / "tabsyn.csv")
 datatraintabsyn2_path = str(data_folder / "tabsyn2.csv")
+datatraintabsyn3_path = str(data_folder / "tabsyn3.csv")
 datatraintabsynminority_path = str(data_folder / "tabsyn_conditional_impact0.csv")
 datatrain_path = str(data_folder / "features4ausw4linearsvc_train.csv")
 scaler_path = str(data_folder / "ausw_dependence_scaler.pkl")
@@ -37,9 +38,10 @@ def get_data():
     df_train = load_df(datatrain_path)
     df_traintabsyn = load_df(datatraintabsyn_path)
     df_traintabsy2 = load_df(datatraintabsyn2_path)
+    df_traintabsy3 = load_df(datatraintabsyn3_path)
     
     # Hinzufügen der Zeilen zu df_train
-    df_train_combined = pd.concat([df_train, df_traintabsyn, df_traintabsy2], ignore_index=True)
+    df_train_combined = pd.concat([df_train, df_traintabsyn, df_traintabsy2, df_traintabsy3], ignore_index=True)
 
     df_testval = load_df(datatest_path)
     # df = filter_pre2(df)
