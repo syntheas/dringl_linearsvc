@@ -1,14 +1,14 @@
-=== Log started at 2025-03-26_11-40-40 ===
-=== train unsampled mix tabsyn  ===
+=== Log started at 2025-03-28_08-48-18 ===
+=== train unsampled mix tabsyn minority ===
 
 Trainiert ein Modell auf den ungesampelten Daten, die mit den TabSyn Daten erweitert wurden.
-Es werden alle gesampelten Zeilen hinzugefügt
+es werden zusätzlich minority samples hinzugefügt
 
 
-X shape: (63112, 287)
+X shape: (34232, 287)
               precision    recall  f1-score   support
 
-           0       0.75      0.80      0.78        71
+           0       0.73      0.80      0.77        71
            1       0.00      0.00      0.00         7
            2       0.00      0.00      0.00        34
            3       0.97      0.99      0.98      1984
@@ -18,13 +18,13 @@ X shape: (63112, 287)
    macro avg       0.54      0.56      0.55      7306
 weighted avg       0.98      0.99      0.99      7306
 
-acc:  0.9897344648234327 
+acc:  0.9885026006022447 
 
 Confusion Matrix:
-Predicted   0  2     3     4
-Actual                      
-0          57  0    14     0
-1           0  0     7     0
-2           0  0    34     0
-3          19  1  1964     0
-4           0  0     0  5210
+Predicted   0  1  2     3     4
+Actual                         
+0          57  0  0    14     0
+1           0  0  0     7     0
+2           0  0  0    34     0
+3          21  1  7  1955     0
+4           0  0  0     0  5210

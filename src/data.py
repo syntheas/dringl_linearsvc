@@ -20,6 +20,8 @@ data_folder= Path(script_dir / "../input")
 outputdependence_folder= Path(script_dir / "../output_dependence")
 
 datatraintabsyn_path = str(data_folder / "tabsyn.csv")
+datatraintabsyn2_path = str(data_folder / "tabsyn2.csv")
+datatraintabsynminority_path = str(data_folder / "tabsyn_conditional_impact0.csv")
 datatrain_path = str(data_folder / "features4ausw4linearsvc_train.csv")
 scaler_path = str(data_folder / "ausw_dependence_scaler.pkl")
 datatrainsampled_path = str(data_folder / "features4ausw4linearsvc_trainsampled.h5")
@@ -34,9 +36,10 @@ output_dependence_path = str(outputdependence_folder / "ausw_dependence_{}.pkl")
 def get_data():
     df_train = load_df(datatrain_path)
     df_traintabsyn = load_df(datatraintabsyn_path)
+    df_traintabsy2 = load_df(datatraintabsyn2_path)
     
     # Hinzufügen der Zeilen zu df_train
-    df_train_combined = pd.concat([df_train, df_traintabsyn], ignore_index=True)
+    df_train_combined = pd.concat([df_train, df_traintabsyn, df_traintabsy2], ignore_index=True)
 
     df_testval = load_df(datatest_path)
     # df = filter_pre2(df)
@@ -65,7 +68,8 @@ def get_sampled_data():
 def load_df(path):
     df = pd.read_csv(path, dtype={'impact': str})
     try:
-        df.drop(columns=["id", "combined_tks"], inplace=True)
+        columns_to_drop = ["id", "combined_tks", "condition_source"]
+        df.drop(columns=[col for col in columns_to_drop if col in df.columns], inplace=True)
     except Exception as e:
         print(e)
     

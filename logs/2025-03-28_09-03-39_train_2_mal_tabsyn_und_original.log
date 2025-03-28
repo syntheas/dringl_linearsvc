@@ -1,11 +1,10 @@
-=== Log started at 2025-03-26_11-40-40 ===
-=== train unsampled mix tabsyn  ===
+=== Log started at 2025-03-28_09-03-39 ===
+=== train 2 mal tabsyn und original ===
 
-Trainiert ein Modell auf den ungesampelten Daten, die mit den TabSyn Daten erweitert wurden.
-Es werden alle gesampelten Zeilen hinzugefügt
+Trainiert ein Modell auf 2 gesampelten TabSyn Datensätzen + originalen train daten.
 
 
-X shape: (63112, 287)
+X shape: (94668, 287)
               precision    recall  f1-score   support
 
            0       0.75      0.80      0.78        71
@@ -18,13 +17,13 @@ X shape: (63112, 287)
    macro avg       0.54      0.56      0.55      7306
 weighted avg       0.98      0.99      0.99      7306
 
-acc:  0.9897344648234327 
+acc:  0.989871338625787 
 
 Confusion Matrix:
-Predicted   0  2     3     4
-Actual                      
-0          57  0    14     0
-1           0  0     7     0
-2           0  0    34     0
-3          19  1  1964     0
-4           0  0     0  5210
+Predicted   0     3     4
+Actual                   
+0          57    14     0
+1           0     7     0
+2           0    34     0
+3          19  1965     0
+4           0     0  5210
