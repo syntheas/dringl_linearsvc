@@ -1,0 +1,26 @@
+=== Log started at 2025-04-10_12-25-11 ===
+=== original + cgan synthetisch 0.95 ===
+
+X shape: (63112, 287)
+              precision    recall  f1-score   support
+
+           0       0.65      0.80      0.72        71
+           1       0.00      0.00      0.00         7
+           2       0.00      0.00      0.00        34
+           3       0.97      0.98      0.98      1984
+           4       1.00      1.00      1.00      5210
+
+    accuracy                           0.99      7306
+   macro avg       0.52      0.56      0.54      7306
+weighted avg       0.98      0.99      0.98      7306
+
+acc:  0.9865863673692855 
+
+Confusion Matrix:
+Predicted   0  2     3     4
+Actual                      
+0          57  0    14     0
+1           0  0     7     0
+2           0  0    34     0
+3          20  1  1953    10
+4          11  0     1  5198
