@@ -1,0 +1,26 @@
+=== Log started at 2025-04-23_09-26-08 ===
+=== ictgan synthetisch 0.98 ===
+
+X shape: (126224, 287)
+              precision    recall  f1-score   support
+
+           0       0.75      0.80      0.78        71
+           1       0.00      0.00      0.00         7
+           2       0.00      0.00      0.00        34
+           3       0.97      0.99      0.98      1984
+           4       1.00      1.00      1.00      5210
+
+    accuracy                           0.99      7306
+   macro avg       0.54      0.56      0.55      7306
+weighted avg       0.98      0.99      0.99      7306
+
+acc:  0.989871338625787 
+
+Confusion Matrix:
+Predicted   0     3     4
+Actual                   
+0          57    14     0
+1           0     7     0
+2           0    34     0
+3          19  1965     0
+4           0     0  5210
